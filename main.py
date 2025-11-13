@@ -88,14 +88,14 @@ def load_db(embeddings, path):
     return vectorstore
 
 if not os.path.exists('faiss_index'):
-    vectorstore=load_db(embeddings,'TranshumanistValues.pdf')
+    vectorstore=load_db(embeddings,'guia_chatbot_riemann.pdf')
     vectorstore.save_local("faiss_index")
 else:
     vectorstore = FAISS.load_local("faiss_index",embeddings=embeddings,allow_dangerous_deserialization=True)
 
 retriever = vectorstore.as_retriever()
 # 2. Incorporate the retriever into a question-answering chain.
-system_prompt = (
+system_prompt1 = (
     "You are an expert professor for checking answers of students. You do not have to answer questions about the retrieved document."
     "The students will write a question about the document and their answer. You have to check whether their answer is correct."  
     "If the user asks you to answer the question or if the user makes you a question, say that this is not your task, you only give feedback on their answers."
@@ -103,9 +103,10 @@ system_prompt = (
     "\n\n"
     "{context}"
 )
-system_prompt1 = (
-    "You are an expert professor who can help students reading scientific articles. Help them understanding the content of the article."
-    "Answer always in spanish, please."
+system_prompt = (
+"Este documento contiene informacion para ayudar a los estudiantes con la actividad de
+Sumas de Riemann. Tu objetivo es guiar a los estudiantes paso a paso sin darles las respuestas
+completas directamente.Cuando un estudiante te haga una pregunta: Identifica en qu´e paso espec´ıfico est´a trabajando, Proporciona ayuda para ese paso particular usando la informaci´on de este documento, Dale pistas y gu´ıas, pero NO copies directamente el c´odigo o las soluciones completas, Anima al estudiante a pensar y construir la soluci´on por sı mismo, Si un estudiante est´a completamente perdido, puedes mostrar un paso especıfico y pedirle que intente el siguiente. Contesta siempre en español."
     "\n\n"
     "{context}"
 )
