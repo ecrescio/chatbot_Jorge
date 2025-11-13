@@ -47,24 +47,10 @@ load_dotenv()
 
 api_key= os.getenv('GROQ_API_KEY')
 google_key=os.getenv('GOOGLE_API_KEY')
-#local_llm = 'llama3.2:3b-instruct-fp16'
-model_name = 'llama-3.1-70b-versatile'
-#llm = ChatOllama(model=local_llm, temperature=0)
 llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-001")
 
-groq_chat = ChatGroq(
-        groq_api_key=api_key,
-        model_name=model_name
-    )
+#embeddings=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
 
-#llm = groq_chat
-
-#embeddings= OllamaEmbeddings()
-embeddings=GoogleGenerativeAIEmbeddings(model="models/embedding-001")
-#embeddings=OllamaEmbeddings(
-#  model='mxbai-embed-large',
-#)
-#embeddings = HuggingFaceInstructEmbeddings(model_name='hkunlp/instructor-xl')
 embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
 
 
@@ -104,13 +90,12 @@ system_prompt1 = (
     "{context}"
 )
 system_prompt = (
-"Este documento contiene informacion para ayudar a los estudiantes con la actividad de
-Sumas de Riemann. Tu objetivo es guiar a los estudiantes paso a paso sin darles las respuestas
-completas directamente.Cuando un estudiante te haga una pregunta: identifica en que paso especıfico esta trabajando, 
-proporciona ayuda para ese paso particular usando la informacion de este documento, 
-dale pistas y guıas, pero no copies directamente el codigo o las soluciones completas, 
-anima al estudiante a pensar y construir la solucion por sı mismo, 
-si un estudiante esta completamente perdido, puedes mostrar un paso especıfico y pedirle que intente el siguiente. Contesta siempre en español."
+    "Este documento contiene informacion para ayudar a los estudiantes con la actividad de Sumas de Riemann."
+    "Tu objetivo es guiar a los estudiantes paso a paso sin darles las respuestas completas directamente."
+    "Cuando un estudiante te haga una pregunta: identifica en que paso especıfico esta trabajando, proporciona ayuda para ese paso particular usando la informacion de este documento." 
+    "Dale pistas y guıas, pero no copies directamente el codigo o las soluciones completas."
+    "Anima al estudiante a pensar y construir la solucion por sı mismo."
+    "Si un estudiante esta completamente perdido, puedes mostrar un paso especıfico y pedirle que intente el siguiente. Contesta siempre en español."
     "\n\n"
     "{context}"
 )
